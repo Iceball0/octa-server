@@ -3,12 +3,16 @@ const router = require('express').Router();
 const Videos = require('../data/videos');
 const upload = require("../upload");
 
-router.post("/", async (req, res) => {
+const jwt = require('jsonwebtoken')
+
+router.post("/", async (req, res, next) => {
     const accessToken = req.get("Authorization").split(' ')[1];
+    console.log(accessToken);
     var verify;
     try {
         verify = jwt.verify(accessToken, process.env.JWT_SECRET);
     } catch (err) {
+        console.log(err);
         return res.status(403).send({ msg: "Логин исчерпан" });
     }
 

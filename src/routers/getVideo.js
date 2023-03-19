@@ -9,9 +9,9 @@ const jwt = require('jsonwebtoken');
 
 router.post("/", async (req, res) => {
 
-    const accessToken = req.headers.authorization.split(' ')[1];
     var verify;
     try {
+        const accessToken = req.headers.authorization.split(' ')[1];
         verify = jwt.verify(accessToken, process.env.JWT_SECRET);
     } catch (err) {
         verify = false;

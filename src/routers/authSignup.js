@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 
 router.post('/', async (req, res, next) => {
 
-    let user = await Users.findOne({ where: { login: req.body.login } });
+    let user = await Users.findOne({ where: { login: req.body.loginReg } });
     
     if (user) 
         return res.status(500).send({ msg: "Пользователь с таким логином уже существует" });
@@ -17,7 +17,7 @@ router.post('/', async (req, res, next) => {
         return res.status(500).send({ msg: "Пароли не совпадают" });
 
     const new_user = {
-        login: req.body.login,
+        login: req.body.loginReg,
         username: req.body.name,
         hashed_password: "",
     }

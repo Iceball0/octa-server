@@ -7,11 +7,12 @@ const bcrypt = require('bcrypt');
 
 router.post('/', async (req, res, next) => {
 
-    req_login = req.body.user;
+    req_login = req.body.userLogin;
+    console.log(req.body);
     const user = await Users.findOne({ where: { login: req_login } });
 
     if (user) {
-        const isValidPwd = await bcrypt.compare(req.body.pwd, user.hashed_password);
+        const isValidPwd = await bcrypt.compare(req.body.pwdLogin, user.hashed_password);
 
         if (isValidPwd) {
             req.user = user;

@@ -2,7 +2,7 @@ const router = require('express').Router();
 
 const Videos = require('../data/videos');
 const Users = require('../data/users');
-const Subscribes = require('../data/subscribes');
+const Likes = require('../data/likes');
 
 const jwt = require('jsonwebtoken');
 
@@ -20,18 +20,19 @@ router.post("/", async (req, res) => {
     var type = req.body.type;
     var videos
 
-    // if (verify) {
+    if (verify) {
 
-    //     let userId = verify.user_id;
-    //     let user = await Users.findOne({ where: { id: userId }, include: ['userSubscribes', Videos]});
-    //     console.log(user);
+        let userId = verify.user_id;
 
-    //     if (type === "Subscribes") videos = await Videos.findAll({ include: Users });
-    //     else if (type === "Favourite") videos = await Videos.findAll({ include: Users });
-    //     else if (type === "OwnVideo") videos = await Videos.findAll({ include: Users });
-    //     else videos = await Videos.findAll({ include: Users });
-    // } else 
-    videos = await Videos.findAll({ include: Users });
+        if (type === "Subscribes") {
+            videos = await Videos.findAll({ include: Users });
+        } else if (type === "Favourite") {
+            
+            videos = await Videos.findAll({ include: Users });
+        } else if (type === "OwnVideo") {
+            videos = await Videos.findAll({ where: {userId: userId}, include: Users });
+        } else videos = await Videos.findAll({ include: Users });
+    } else videos = await Videos.findAll({ include: Users });
     
     if (videos) {
         let result = [];
